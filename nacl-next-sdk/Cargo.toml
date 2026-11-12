@@ -1,0 +1,42 @@
+[package]
+name = "nacl-next-sdk"
+version = "0.1.0"
+description = "NaCL Next Core SDK: local instances, Java detection, dual identity, unified launch"
+edition = "2021"
+publish = false
+
+[lib]
+name = "nacl_next_sdk"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tempfile = "3"
+uuid = { version = "1", features = ["v4"] }
+walkdir = "2"
+md5 = "0.7"
+sha1 = "0.10"
+sha2 = "0.10"
+zip = { version = "2", default-features = false, features = ["deflate"] }
+ts-rs = { version = "11", optional = true, features = ["serde-json-impl"] }
+
+# generic transfer stack (S2): legal for every mode incl. B (guide section 9.2)
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "json", "rustls-tls"] }
+url = "2"
+
+# microsoft feature only
+base64 = { version = "0.22", optional = true }
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_Security_Cryptography"], optional = true }
+
+[features]
+default = []
+microsoft = ["dep:base64", "dep:windows-sys"]
+contracts = ["dep:ts-rs"]
+
+[[example]]
+name = "export_contracts"
+required-features = ["contracts"]
+
+[dev-dependencies]

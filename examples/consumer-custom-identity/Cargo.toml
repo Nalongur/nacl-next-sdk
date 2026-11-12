@@ -1,0 +1,18 @@
+[package]
+name = "consumer-custom-identity"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Independent S1 consumer proving the AccountProvider trait is implementable
+# from outside the SDK without touching SDK internals (review §6.5 direction).
+[dependencies]
+nacl-next-sdk = { path = "../../nacl-next-sdk" }
+
+[features]
+# Passthrough so the same consumer can be built in D mode:
+# cargo run --features microsoft
+microsoft = ["nacl-next-sdk/microsoft"]
+
+[workspace]
+

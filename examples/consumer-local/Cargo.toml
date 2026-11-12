@@ -1,0 +1,13 @@
+[package]
+name = "consumer-local"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Independent S1 consumer: NOT part of the SDK workspace, resolves its own
+# Cargo.lock, and deliberately enables no features (B mode).
+[dependencies]
+nacl-next-sdk = { path = "../../nacl-next-sdk" }
+
+[workspace]
+

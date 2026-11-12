@@ -1,0 +1,20 @@
+name: SDK checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install observed Rust toolchain
+        shell: pwsh
+        run: |
+          rustup toolchain install 1.97.1 --profile minimal
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          rustup default 1.97.1
+      - run: cargo test --locked
+      - run: cargo test --locked --features microsoft
+      - run: cargo run --locked --manifest-path examples/consumer-local/Cargo.toml
+      - run: cargo run --locked --manifest-path examples/consumer-custom-identity/Cargo.toml
